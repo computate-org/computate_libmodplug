@@ -33,8 +33,12 @@
     dest: "{{ APP_SRC }}"
     version: "{{ APP_TAG }}"
   when: not APP_README_PATH.stat.exists and CLONE_REPO.failed
-- name: Run ./configure
-  shell: ./configure
+- name: Run autoreconf -vi
+  shell: autoreconf -vi
+  args:
+    chdir: "{{ APP_SRC }}"
+- name: Run ./configure --prefix={{ APP_PREFIX }}
+  shell: ./configure --prefix={{ APP_PREFIX }}
   args:
     chdir: "{{ APP_SRC }}"
 - name: Run make
