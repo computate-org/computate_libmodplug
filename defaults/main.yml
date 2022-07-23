@@ -6,6 +6,7 @@ APP_DEPENDENCIES_REDHAT:
   - cmake
   - libtool
   - git
+  - gcc-c++
 APP_DEPENDENCIES: "{{ APP_DEPENDENCIES_REDHAT if ansible_distribution_file_variety == 'RedHat' else APP_DEPENDENCIES_REDHAT }}"
 APP_NAME: libmodplug
 APP_USER: "{{ lookup('env', 'USER') }}"
