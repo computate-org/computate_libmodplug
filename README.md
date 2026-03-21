@@ -15,7 +15,7 @@ cd ~/.ansible/roles/computate.computate_libmodplug
 # Run the libmodplug ansible playbook to install libmodplug locally. 
 
 ```bash
-ansible-playbook install.yml
+ansible-playbook install.yml -K
 ```
 
 Christopher Tate
