@@ -14,6 +14,7 @@
   stat:
     path: "{{ APP_SRC }}/README"
   register: APP_README_PATH
+  become: "{{ APP_ROOT }}"
 - name: "Clone the {{ APP_REPO_SSH }} source code into {{ APP_SRC }}"
   ansible.builtin.git:
     repo: "{{ APP_REPO_SSH }}"
@@ -22,24 +23,29 @@
   ignore_errors: true
   when: not APP_README_PATH.stat.exists
   register: CLONE_REPO
+  become: "{{ APP_ROOT }}"
 - name: "Clone the {{ APP_REPO_HTTPS }} source code into {{ APP_SRC }}"
   ansible.builtin.git:
     repo: "{{ APP_REPO_HTTPS }}"
     dest: "{{ APP_SRC }}"
     version: "{{ APP_TAG }}"
   when: not APP_README_PATH.stat.exists and CLONE_REPO.failed
+  become: "{{ APP_ROOT }}"
 - name: Run autoreconf -vi
   shell: autoreconf -vi
   args:
     chdir: "{{ APP_SRC }}"
+  become: "{{ APP_ROOT }}"
 - name: Run ./configure --prefix={{ APP_PREFIX }}
   shell: ./configure --prefix={{ APP_PREFIX }}
   args:
     chdir: "{{ APP_SRC }}"
+  become: "{{ APP_ROOT }}"
 - name: Run make
   shell: make
   args:
     chdir: "{{ APP_SRC }}"
+  become: "{{ APP_ROOT }}"
 - name: Run make install
   shell: make install
   args:
